@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from loader import dp, bot
 
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
@@ -10,13 +11,19 @@ from tgbot.filters.admin import AdminFilter
 from tgbot.handlers.admin import register_admin
 from tgbot.handlers.echo import register_echo
 from tgbot.handlers.user import register_user
+from tgbot.handlers.feedback import register_feedback
+from tgbot.handlers.about_us import register_about_us
+from tgbot.handlers.support_call import register_support
 from tgbot.middlewares.db import DbMiddleware
+from tgbot.middlewares.support_middleware import SupportMiddleware
 
 logger = logging.getLogger(__name__)
 
+#!важен порядок, именно Middlewares, filters, handlers
 
 def register_all_middlewares(dp):
     dp.setup_middleware(DbMiddleware())
+    dp.setup_middleware(SupportMiddleware())
 
 
 def register_all_filters(dp):
@@ -26,8 +33,12 @@ def register_all_filters(dp):
 def register_all_handlers(dp):
     register_admin(dp)
     register_user(dp)
+    register_feedback(dp)
+    register_about_us(dp)
+    register_support(dp)
 
     register_echo(dp)
+
 
 
 async def main():
@@ -54,7 +65,8 @@ async def main():
     finally:
         await dp.storage.close()
         await dp.storage.wait_closed()
-        await bot.session.close()
+        session = await bot.get_session()
+        await session.close()
 
 
 if __name__ == '__main__':
