@@ -10,6 +10,7 @@ from tgbot.config import load_config
 from tgbot.filters.admin import AdminFilter
 from tgbot.handlers.admin import register_admin
 from tgbot.handlers.echo import register_echo
+from tgbot.handlers.order import register_order
 from tgbot.handlers.user import register_user
 from tgbot.handlers.feedback import register_feedback
 from tgbot.handlers.about_us import register_about_us
@@ -33,6 +34,7 @@ def register_all_filters(dp):
 def register_all_handlers(dp):
     register_admin(dp)
     register_user(dp)
+    register_order(dp)
     register_feedback(dp)
     register_about_us(dp)
     register_support(dp)

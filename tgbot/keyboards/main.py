@@ -6,7 +6,7 @@ kb = [
             types.KeyboardButton(text="📝 Оставить отзыв")
         ],
         [
-            types.KeyboardButton(text="💸 Оплата"),
+            types.KeyboardButton(text="🏁 Сделать заказ"),
             types.KeyboardButton(text="🦸‍ Связь с оператором")
         ]
     ]
