@@ -47,7 +47,7 @@ async def some_query(query: types.InlineQuery):
                 title="Какое-то видео",
                 description="Какое то описание",
                 thumb_url="https://i.ytimg.com/vi/g6xvW2FOuPw/hq720.jpg?sqp=-oaymwEXCNAFEJQDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCUZf6pJf0_U1JGMm-5f_kT-sGDdA",
-                mime_type="text/html",
+                mime_type="video/mp4"
                 # input_message_content=types.InputTextMessageContent(
                 #     message_text="https://youtu.be/g6xvW2FOuPw",
                 #     entities=[types.MessageEntity(type="pre",
@@ -56,14 +56,14 @@ async def some_query(query: types.InlineQuery):
                 #                                   url="https://youtu.be/g6xvW2FOuPw")],
                 #     disable_web_page_preview=False
                 # )
-            ),
-            types.InlineQueryResultCachedPhoto(
-                id="2",
-                photo_file_id="AgACAgIAAxkBAAEBcDFjZ_5NFvkOUHhYoyP5d0-qbedSOAAC38MxG4ikQUv52Oy6DBKyuQEAAwIAA3gAAysE",
-                title="Токамак",
-                description="T-10",
-                caption="T-10"
             )
+            # types.InlineQueryResultCachedPhoto(
+            #     id="2",
+            #     photo_file_id="AgACAgIAAxkBAAEBcDFjZ_5NFvkOUHhYoyP5d0-qbedSOAAC38MxG4ikQUv52Oy6DBKyuQEAAwIAA3gAAysE",
+            #     title="Токамак",
+            #     description="T-10",
+            #     caption="T-10"
+            # )
         ]
     )
 
