@@ -39,7 +39,7 @@ def register_all_handlers(dp):
     register_about_us(dp)
     register_support(dp)
 
-    register_echo(dp)
+    # register_echo(dp)
 
 
 

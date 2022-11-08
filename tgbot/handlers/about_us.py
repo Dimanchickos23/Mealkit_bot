@@ -33,4 +33,3 @@ async def main_menu(callback: types.CallbackQuery):
 
 def register_about_us(dp: Dispatcher):
     dp.register_message_handler(cmd_inline_url, lambda message: message.text == "🌍 Мы в Соцсетях", state="*")
-    dp.register_callback_query_handler(main_menu,lambda callback_query: callback_query.data == 'В главное меню')
