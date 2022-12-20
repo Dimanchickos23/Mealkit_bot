@@ -16,6 +16,7 @@ class TgBot:
     token: str
     admin_ids: list[int]
     use_redis: bool
+    payment_provider_token: str
 
 
 @dataclass
@@ -37,6 +38,7 @@ def load_config(path: str = None):
         tg_bot=TgBot(
             token=env.str("BOT_TOKEN"),
             admin_ids=list(map(int, env.list("ADMINS"))),
+            payment_provider_token=env.str("PAYMENTS_PROVIDER_TOKEN"),
             use_redis=env.bool("USE_REDIS"),
         ),
         db=DbConfig(

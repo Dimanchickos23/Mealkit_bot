@@ -10,7 +10,9 @@ from tgbot.config import load_config
 from tgbot.filters.admin import AdminFilter
 from tgbot.handlers.admin import register_admin
 from tgbot.handlers.echo import register_echo
+from tgbot.handlers.metabolism import register_metabolism_handlers
 from tgbot.handlers.order import register_order
+from tgbot.handlers.payment import register_payment
 from tgbot.handlers.user import register_user
 from tgbot.handlers.feedback import register_feedback
 from tgbot.handlers.about_us import register_about_us
@@ -35,11 +37,13 @@ def register_all_handlers(dp):
     register_admin(dp)
     register_user(dp)
     register_order(dp)
+    register_payment(dp)
     register_feedback(dp)
     register_about_us(dp)
     register_support(dp)
+    register_metabolism_handlers(dp)
 
-    # register_echo(dp)
+    register_echo(dp)
 
 
 
@@ -60,7 +64,6 @@ async def main():
     register_all_middlewares(dp)
     register_all_filters(dp)
     register_all_handlers(dp)
-
     # start
     try:
         await dp.start_polling()

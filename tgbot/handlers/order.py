@@ -11,14 +11,16 @@ from tgbot.misc.meal_day_data import results_dict
 from tgbot.misc.states import Order
 
 
-async def order_start(message: Message, state: FSMContext):
+async def order_start(cb: CallbackQuery, state: FSMContext):
     await Order.Meal_type.set()
-    await message.answer_sticker(sticker="CAACAgIAAxkBAAEBcPBjaZsnaYo0ScyRSN4g4QlhhYefNQACERMAAu40sEmMXcn13VOhOysE")
-    await message.answer("Выберите тип рациона:", reply_markup=meal_types_kb)
+    await cb.message.answer_sticker(sticker="CAACAgIAAxkBAAEBcPBjaZsnaYo0ScyRSN4g4QlhhYefNQACERMAAu40sEmMXcn13VOhOysE")
+    await cb.message.answer("Выберите тип рациона:", reply_markup=meal_types_kb)
 
 
 async def display_menu(cb: CallbackQuery, state: FSMContext, callback_data: dict):
-    await state.update_data(meal_type=callback_data['type'])
+    await state.update_data(meal_type=callback_data['type'], calories=callback_data['calories'],
+                            price_day=callback_data['price_day'],
+                            image_url=callback_data['image_url'])
     await Order.Menu.set()
     for i in range(1, 4):
         menu_by_days_kb.insert(
@@ -27,6 +29,13 @@ async def display_menu(cb: CallbackQuery, state: FSMContext, callback_data: dict
                 switch_inline_query_current_chat=callback_data['type'] + f" день {i}"
             )
         )
+    menu_by_days_kb.insert(
+        InlineKeyboardButton(
+            text="Хочу это меню 😋",
+            callback_data="payment_start"
+        )
+    )
+
     await cb.message.edit_text(f"Вы выбрали рацион <b>{callback_data['type']}</b>"
                                f" на <b>{callback_data['calories']} ккал/день.</b>\n"
                                f"С помощью клавиш ниже можно ознакомиться с меню на ближайшие дни.",
@@ -64,7 +73,7 @@ async def back_2(cb: CallbackQuery, state: FSMContext):
 
 
 def register_order(dp: Dispatcher):
-    dp.register_message_handler(order_start, lambda message: message.text == "🏁 Сделать заказ", state="*")
+    dp.register_callback_query_handler(order_start, lambda callback_query: callback_query.data == "order", state="*")
     dp.register_callback_query_handler(display_menu, meal_type_cb.filter(), state=Order.Meal_type)
     dp.register_inline_handler(days_menu, state=Order.Menu)
     dp.register_callback_query_handler(back, lambda callback_query: callback_query.data == "назад", state=Order.Menu)

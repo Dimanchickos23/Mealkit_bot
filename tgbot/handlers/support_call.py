@@ -1,19 +1,20 @@
 import emoji
 from aiogram import types
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
 from loader import dp, bot
-from tgbot.keyboards.main import keyboard
+# from tgbot.keyboards.main import keyboard
+from tgbot.keyboards.main import inline_keyboard
 
 from tgbot.keyboards.support import support_keyboard, support_callback, check_support_available, get_support_manager, \
     cancel_support, cancel_support_callback
 
 #@dp.message_handler(Command("support_call"))
-async def ask_support_call(message: Message):
+async def ask_support_call(cb: CallbackQuery):
     text="Чтобы связаться с техподдержкой, нажмите на кнопку ниже."
     kb = await support_keyboard(messages="many")
-    await message.answer(text, reply_markup=kb)
+    await cb.message.answer(text, reply_markup=kb)
 
 
 #@dp.callback_query_handler(support_callb ack.filter(messages="many", as_user="yes"))
@@ -93,11 +94,11 @@ async def exit_support(call: types.CallbackQuery, state: FSMContext, callback_da
     await call.message.edit_text("Вы завершили сеанс")
     await state.reset_state()
     await call.message.answer_sticker(sticker="CAACAgIAAxkBAAEBI8NiqOKtCL6CGHjP6ZddTWavbnjcXwACXw8AAoMo-EsCNiHWZ-EzbSQE")
-    await call.message.answer("Я могу чем-то еще помочь?", reply_markup=keyboard)
+    await call.message.answer("Я могу чем-то еще помочь?", reply_markup=inline_keyboard)
 
 
 def register_support(dp: dp):
-    dp.register_message_handler(ask_support_call, lambda message: message.text == "🦸‍ Связь с оператором", state="*")
+    dp.register_callback_query_handler(ask_support_call, lambda callback_query: callback_query.data == "support", state="*")
     dp.register_callback_query_handler(send_to_support_call,support_callback.filter(messages="many", as_user="yes"))
     dp.register_callback_query_handler(answer_to_support_call, support_callback.filter(messages="many", as_user="no"))
     dp.register_message_handler(not_supported,state="wait_in_support", content_types=types.ContentTypes.ANY)
